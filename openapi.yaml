@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  title: Tax Calculation API
+  description: API to calculate taxes based on annual income and tax brackets for a given tax year.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+paths:
+  /api/tax:
+    get:
+      summary: Calculate tax based on annual income and tax year
+      description: Returns the tax owed based on tax brackets defined in a JSON file for a given year.
+      parameters:
+        - name: income
+          in: query
+          description: The user's annual income
+          required: true
+          schema:
+            type: number
+            format: float
+            example: 75000
+        - name: year
+          in: query
+          description: The tax year to use for calculations
+          required: true
+          schema:
+            type: integer
+            example: 2022
+      responses:
+        "200":
+          description: Successfully calculated the tax
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  year:
+                    type: integer
+                    example: 2023
+                  income:
+                    type: number
+                    format: float
+                    example: 75000
+                  tax_owed:
+                    type: number
+                    format: float
+                    example: 12345.67
+        "400":
+          description: Invalid request (e.g., missing or incorrect income/year parameters)
